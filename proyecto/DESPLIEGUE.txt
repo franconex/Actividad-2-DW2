@@ -1,0 +1,137 @@
+=====================================================================
+  CÓMO DESPLEGAR EL INVENTARIO EN INTERNET (Render + Neon)
+=====================================================================
+
+El proyecto tiene 2 partes:
+  1) La BASE DE DATOS  -> ya está en internet (Neon). No hay que hacer nada.
+  2) El SERVIDOR (servidor.js + la página) -> esto es lo que vamos a subir
+     a Render, que es gratis.
+
+Al final vas a tener un link así:  https://inventario-xxxx.onrender.com
+que funciona desde cualquier computadora o celular.
+
+
+---------------------------------------------------------------------
+PASO 0: PROTEGER LA CONTRASEÑA (IMPORTANTE)
+---------------------------------------------------------------------
+El archivo .env tiene la contraseña de tu base de datos. NUNCA se debe
+subir a GitHub.
+
+En la carpeta "ACTIVIDAD 2" (la que tiene la carpeta .git), crea un
+archivo llamado  .gitignore  con este contenido:
+
+    .env
+    node_modules/
+
+Luego, en la terminal, desde esa carpeta:
+
+    git add .gitignore
+    git commit -m "Agregar .gitignore"
+
+Verifica con  git status  que .env NO aparezca en la lista.
+
+
+---------------------------------------------------------------------
+PASO 1: SUBIR EL PROYECTO A GITHUB
+---------------------------------------------------------------------
+1. Entra a https://github.com y crea una cuenta (si no tienes).
+2. Arriba a la derecha: "+"  ->  "New repository".
+3. Nombre: inventario-actividad-2  (puede ser Público o Privado).
+   NO marques "Add a README". Dale a "Create repository".
+4. GitHub te muestra unos comandos. En la terminal, dentro de la carpeta
+   "ACTIVIDAD 2", ejecuta (cambia TU_USUARIO por tu usuario de GitHub):
+
+    git remote add origin https://github.com/TU_USUARIO/inventario-actividad-2.git
+    git branch -M main
+    git push -u origin main
+
+5. Recarga la página de GitHub: deben aparecer tus archivos.
+   Revisa que NO esté el archivo .env.
+
+
+---------------------------------------------------------------------
+PASO 2: CREAR EL SERVICIO EN RENDER
+---------------------------------------------------------------------
+1. Entra a https://render.com y regístrate con tu cuenta de GitHub
+   ("Sign in with GitHub").
+2. Clic en "New +"  ->  "Web Service".
+3. Elige tu repositorio "inventario-actividad-2" -> "Connect".
+4. Llena así:
+
+     Name ............... inventario-actividad-2  (o el que quieras)
+     Region ............. Ohio (US East)   <- la más cerca de tu base Neon
+     Branch ............. main
+     Root Directory ..... proyecto          <- MUY IMPORTANTE
+     Runtime ............ Node
+     Build Command ...... npm install
+     Start Command ...... node servidor.js  <- NO uses "npm start"
+     Instance Type ...... Free
+
+   (¿Por qué no "npm start"? Porque ese comando busca el archivo .env,
+    y en Render no existe: ahí la contraseña se pone en el paso 5.)
+
+5. Baja hasta "Environment Variables" -> "Add Environment Variable":
+
+     NAME:   DATABASE_URL
+     VALUE:  (copia la línea completa que está en tu archivo .env,
+              solo lo que va DESPUÉS de "DATABASE_URL=")
+
+   Empieza con  postgresql://actividad_2_owner:...  y termina con
+   ?sslmode=verify-full
+
+   NO agregues PORT: Render lo pone solo.
+
+6. Clic en "Deploy Web Service" (o "Create Web Service").
+
+
+---------------------------------------------------------------------
+PASO 3: PROBAR
+---------------------------------------------------------------------
+1. Espera 2 a 5 minutos. En los "Logs" debe aparecer:
+       Inventario en http://localhost:10000
+   (el número puede cambiar, es normal).
+2. Arriba sale tu link:  https://inventario-actividad-2.onrender.com
+   Ábrelo: debe salir la tabla con tus productos.
+3. Para comprobar que la base funciona, abre también:
+       https://TU-LINK.onrender.com/api/productos
+   Debe mostrar los productos en formato JSON.
+
+
+---------------------------------------------------------------------
+CÓMO ACTUALIZAR DESPUÉS DE HACER CAMBIOS
+---------------------------------------------------------------------
+Cada vez que cambies el código:
+
+    git add .
+    git commit -m "Describe tu cambio"
+    git push
+
+Render detecta el cambio y se vuelve a desplegar solo.
+
+
+---------------------------------------------------------------------
+PROBLEMAS COMUNES
+---------------------------------------------------------------------
+* La página tarda ~50 segundos en abrir la primera vez:
+  Es normal en el plan gratis. Render "duerme" el servidor si nadie lo
+  usa por 15 minutos. Ábrelo un rato antes de presentar.
+
+* En los Logs dice "Falta DATABASE_URL":
+  No pusiste la variable del Paso 2.5, o el nombre está mal escrito.
+  Ve a tu servicio -> "Environment" -> agrégala -> "Save Changes".
+
+* Error "Cannot find module" o "no such file servidor.js":
+  El "Root Directory" no está en  proyecto .
+  Ve a "Settings" -> "Root Directory" -> escribe  proyecto  -> guarda.
+
+* Error ".env: not found":
+  El Start Command está como "npm start". Cámbialo a  node servidor.js
+  en "Settings" -> "Start Command".
+
+* Sale "Sin conexión" en la página:
+  Revisa los Logs de Render. Si dice "password authentication failed",
+  copiaste mal DATABASE_URL (cópiala de nuevo desde tu .env, completa).
+
+* Sigue sin funcionar en tu PC (no en Render):
+  Recuerda abrir  http://localhost:3000  (con "npm start" corriendo),
+  NO hacer doble clic en index.html ni usar Live Server.
