@@ -1,0 +1,502 @@
+/* =========================================
+   1. COLORES Y VARIABLES
+   ========================================= */
+:root {
+  --fondo: #f5f6f8;
+  --blanco: #ffffff;
+  --texto: #1f2937;
+  --gris: #6b7280;
+  --borde: #e5e7eb;
+  --principal: #2563eb;
+  --principal-oscuro: #1d4ed8;
+  --error: #dc2626;
+  --exito: #16a34a;
+  --aviso: #d97706;
+  --radio: 8px;
+}
+
+
+/* =========================================
+   2. ESTILOS GENERALES
+   ========================================= */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 15px;
+  background-color: var(--fondo);
+  color: var(--texto);
+}
+
+h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+
+/* =========================================
+   3. BARRA SUPERIOR
+   ========================================= */
+.barra {
+  background-color: var(--blanco);
+  border-bottom: 1px solid var(--borde);
+}
+
+.barra-contenido {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.marca {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.atajos {
+  font-size: 13px;
+  color: var(--gris);
+}
+
+
+/* =========================================
+   4. CONTENEDOR Y TARJETA
+   ========================================= */
+.contenedor {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.tarjeta {
+  background-color: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+}
+
+.encabezado {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.subtitulo {
+  margin: 2px 0 0 0;
+  font-size: 14px;
+  color: var(--gris);
+}
+
+.herramientas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+#buscador {
+  width: 300px;
+  max-width: 100%;
+}
+
+
+/* =========================================
+   5. TABLA DE PRODUCTOS
+   ========================================= */
+.tabla-desplazable {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 12px 20px;
+  text-align: left;
+  border-top: 1px solid var(--borde);
+  white-space: nowrap;
+}
+
+th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--gris);
+  background-color: #fafafa;
+}
+
+/* Columnas de números (precio, stock y total) alineadas a la derecha */
+th.numero,
+td:nth-child(4),
+td:nth-child(5),
+td:nth-child(6) {
+  text-align: right;
+}
+
+/* Columna de botones Editar / Eliminar */
+td:last-child {
+  text-align: right;
+}
+
+/* Fila resaltada al pasar el mouse */
+tbody tr:hover {
+  background-color: #f9fafb;
+  cursor: pointer;
+}
+
+.tabla-vacia {
+  padding: 40px;
+  text-align: center !important;
+  color: var(--gris);
+}
+
+
+/* =========================================
+   6. CAMPOS DEL FORMULARIO
+   ========================================= */
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 9px 12px;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background-color: var(--blanco);
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* Campo seleccionado */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--principal);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Campo de solo lectura (código al editar) */
+input[readonly] {
+  background-color: #f3f4f6;
+  color: var(--gris);
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.rejilla {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+  row-gap: 4px;
+}
+
+/* Campo que ocupa las dos columnas */
+.completo {
+  grid-column: 1 / 3;
+}
+
+.campo {
+  margin-bottom: 8px;
+}
+
+.pie-campo {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.contador {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--gris);
+}
+
+
+/* =========================================
+   7. ESTADOS DE VALIDACIÓN
+   ========================================= */
+/* Dato correcto: borde verde */
+.correcto {
+  border-color: var(--exito);
+}
+
+/* Dato incorrecto: borde rojo */
+.incorrecto,
+.incorrecto:focus {
+  border-color: var(--error);
+}
+
+.incorrecto:focus {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+}
+
+/* Mensaje de error debajo del campo */
+.texto-error {
+  display: block;
+  min-height: 18px;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--error);
+}
+
+
+/* =========================================
+   8. BOTONES
+   ========================================= */
+.boton {
+  padding: 9px 16px;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: bold;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Botón azul (Nuevo producto, Guardar) */
+.boton-principal {
+  background-color: var(--principal);
+  color: white;
+}
+
+.boton-principal:hover {
+  background-color: var(--principal-oscuro);
+}
+
+/* Botón blanco (Cancelar) */
+.boton-secundario {
+  background-color: var(--blanco);
+  color: var(--texto);
+  border-color: #d1d5db;
+}
+
+.boton-secundario:hover {
+  background-color: #f9fafb;
+}
+
+/* Botón rojo (Sí, eliminar) */
+.boton-peligro {
+  background-color: var(--error);
+  color: white;
+}
+
+.boton-peligro:hover {
+  background-color: #b91c1c;
+}
+
+/* Botones dentro de la tabla (Editar, Eliminar) */
+.boton-tabla {
+  padding: 4px 6px;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--principal);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.boton-tabla:hover {
+  text-decoration: underline;
+}
+
+.boton-tabla.peligro {
+  color: var(--error);
+}
+
+/* Botón X para cerrar */
+.boton-cerrar {
+  font-size: 24px;
+  line-height: 1;
+  color: var(--gris);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.boton-cerrar:hover {
+  color: var(--texto);
+}
+
+
+/* =========================================
+   9. VENTANAS (MODALES)
+   ========================================= */
+/* Fondo oscuro que cubre toda la pantalla */
+.ventana-fondo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(17, 24, 39, 0.45);
+}
+
+/* Ventana oculta */
+.ventana-fondo[hidden] {
+  display: none;
+}
+
+/* Cuadro blanco de la ventana */
+.ventana {
+  width: 100%;
+  max-width: 560px;
+  max-height: 100%;
+  overflow-y: auto;
+  background-color: var(--blanco);
+  border-radius: 10px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  animation: aparecer 0.2s ease-out;
+}
+
+/* Animación al abrir */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.ventana-cabecera {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--borde);
+}
+
+.ventana-titulo {
+  margin: 0;
+  font-size: 18px;
+}
+
+form {
+  padding: 20px 20px 0 20px;
+}
+
+.ventana-pie {
+  margin: 8px -20px 0 -20px;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  border-top: 1px solid var(--borde);
+}
+
+
+/* =========================================
+   10. VENTANAS DE CONFIRMACIÓN Y MENSAJE
+   ========================================= */
+/* Van encima de la ventana del formulario */
+#ventana-confirmacion,
+#ventana-mensaje {
+  z-index: 20;
+}
+
+.ventana-pequena {
+  max-width: 380px;
+  padding: 28px 24px 24px 24px;
+  text-align: center;
+}
+
+.ventana-pequena .ventana-titulo {
+  margin-top: 14px;
+}
+
+.ventana-texto {
+  margin: 8px 0 0 0;
+  line-height: 1.5;
+  color: var(--gris);
+}
+
+.botones-centrados {
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Círculo con el ícono ✓ ✕ ! */
+.icono-mensaje {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26px;
+  font-weight: bold;
+  border-radius: 50%;
+}
+
+.icono-mensaje.exito {
+  background-color: #dcfce7;
+  color: var(--exito);
+}
+
+.icono-mensaje.error {
+  background-color: #fee2e2;
+  color: var(--error);
+}
+
+.icono-mensaje.aviso {
+  background-color: #fef3c7;
+  color: var(--aviso);
+}
+
+
+/* =========================================
+   11. CELULAR (pantallas pequeñas)
+   ========================================= */
+@media (max-width: 600px) {
+  .atajos {
+    display: none;
+  }
+
+  /* El formulario pasa a una sola columna */
+  .rejilla {
+    grid-template-columns: 1fr;
+  }
+
+  .completo {
+    grid-column: 1;
+  }
+
+  .herramientas,
+  #buscador {
+    width: 100%;
+  }
+
+  .herramientas .boton {
+    width: 100%;
+  }
+}

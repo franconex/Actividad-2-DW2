@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventario de Productos</title>
+  <link rel="stylesheet" href="css/estilos.css">
+
+</head>
+<body>
+  <!-- Barra superior -->
+  <header class="barra">
+    <div class="barra-contenido">
+      <span class="marca">Inventario</span>
+      <span class="atajos">Alt+C nuevo · Enter siguiente campo · Ctrl+S guardar · Esc cerrar</span>
+    </div>
+  </header>
+
+  <!-- Listado de productos -->
+  <main class="contenedor">
+    <section class="tarjeta">
+      <div class="encabezado">
+        <div>
+          <h1>Productos</h1>
+          <p id="total-productos" class="subtitulo">0 registrados</p>
+        </div>
+        <div class="herramientas">
+          <input id="buscador" type="search" placeholder="Buscar por código, nombre o categoría">
+          <button id="boton-nuevo" class="boton boton-principal">+ Nuevo producto</button>
+        </div>
+      </div>
+
+      <div class="tabla-desplazable">
+        <table>
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Categoría</th>
+              <th class="numero">Precio</th>
+              <th class="numero">Stock</th>
+              <th class="numero">Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="cuerpo-tabla"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Ventana 1: formulario del producto -->
+  <div id="ventana-formulario" class="ventana-fondo" hidden>
+    <div class="ventana" role="dialog" aria-modal="true">
+      <div class="ventana-cabecera">
+        <h2 class="ventana-titulo">Nuevo producto</h2>
+        <button type="button" class="boton-cerrar" data-cerrar aria-label="Cerrar">&times;</button>
+      </div>
+
+      <form id="formulario-producto" novalidate autocomplete="off">
+        <div class="rejilla">
+          <div class="campo">
+            <label for="codigo">Código</label>
+            <input id="codigo" name="codigo" type="text" maxlength="8" placeholder="PRD-0001">
+            <small class="texto-error"></small>
+          </div>
+
+          <div class="campo">
+            <label for="categoria">Categoría</label>
+            <select id="categoria" name="categoria">
+              <option value="">Seleccione...</option>
+              <option>Electrónica</option>
+              <option>Alimentos</option>
+              <option>Bebidas</option>
+              <option>Limpieza</option>
+              <option>Papelería</option>
+              <option>Otros</option>
+            </select>
+            <small class="texto-error"></small>
+          </div>
+
+          <div class="campo completo">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" type="text" maxlength="60" placeholder="Ej. Laptop Lenovo IdeaPad 3">
+            <small class="texto-error"></small>
+          </div>
+
+          <div class="campo">
+            <label for="precio">Precio (Bs)</label>
+            <input id="precio" name="precio" type="text" inputmode="decimal" placeholder="0.00" data-solo="decimal">
+            <small class="texto-error"></small>
+          </div>
+
+          <div class="campo">
+            <label for="stock">Stock</label>
+            <input id="stock" name="stock" type="text" inputmode="numeric" placeholder="0" data-solo="entero">
+            <small class="texto-error"></small>
+          </div>
+
+          <div class="campo completo">
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" name="descripcion" rows="3" maxlength="200" placeholder="Características principales"></textarea>
+            <div class="pie-campo">
+              <small class="texto-error"></small>
+              <small class="contador">0/200</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="ventana-pie">
+          <button type="button" class="boton boton-secundario" data-cerrar>Cancelar</button>
+          <button type="submit" class="boton boton-principal">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Ventana 2: confirmación (¿Está seguro?) -->
+  <div id="ventana-confirmacion" class="ventana-fondo" hidden>
+    <div class="ventana ventana-pequena" role="alertdialog" aria-modal="true">
+      <div class="icono-mensaje aviso">!</div>
+      <h2 class="ventana-titulo">¿Está seguro?</h2>
+      <p class="ventana-texto"></p>
+      <div class="botones-centrados">
+        <button type="button" class="boton boton-secundario" data-cerrar>Cancelar</button>
+        <button type="button" class="boton boton-peligro" data-aceptar>Sí, eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ventana 3: mensaje temporal (se cierra sola) -->
+  <div id="ventana-mensaje" class="ventana-fondo" hidden>
+    <div class="ventana ventana-pequena" role="status">
+      <div class="icono-mensaje exito">✓</div>
+      <h2 class="ventana-titulo"></h2>
+      <p class="ventana-texto"></p>
+    </div>
+  </div>
+
+  <!-- Orden de carga: Modelo → Vista → Controlador -->
+  <script src="js/modelo.js"></script>
+  <script src="js/vista.js"></script>
+  <script src="js/controlador.js"></script>
+</body>
+</html>
