@@ -23,7 +23,7 @@ app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 // Consulta base: productos con el nombre de su categoría.
 const SELECCIONAR_PRODUCTOS = `
   SELECT p.codigo, p.nombre, c.nombre AS categoria, p.precio::float AS precio,
-         p.stock, p.descripcion
+         p.stock, COALESCE(p.descripcion, '') AS descripcion
   FROM productos p JOIN categorias c ON c.id = p.categoria_id`;
 
 // Validación en el servidor (las mismas reglas que el formulario).
@@ -35,7 +35,10 @@ function validarProducto(datos) {
   if (!categoria) errores.push('Categoría obligatoria.');
   if (!/^\d+(\.\d{1,2})?$/.test(String(precio)) || precio < 0.1 || precio > 100000) errores.push('Precio entre 0.10 y 100 000.');
   if (!/^\d+$/.test(String(stock)) || stock > 10000) errores.push('Stock entero entre 0 y 10 000.');
-  if (typeof descripcion !== 'string' || descripcion.trim().length < 10 || descripcion.trim().length > 200) errores.push('Descripción: 10 a 200 caracteres.');
+  // La descripción puede quedar vacía; si se escribe, debe tener 10 a 200 caracteres.
+  const textoDescripcion = typeof descripcion === 'string' ? descripcion.trim() : '';
+  if (descripcion != null && typeof descripcion !== 'string') errores.push('Descripción inválida.');
+  else if (textoDescripcion !== '' && (textoDescripcion.length < 10 || textoDescripcion.length > 200)) errores.push('Descripción: 10 a 200 caracteres.');
   return errores;
 }
 
@@ -70,7 +73,7 @@ app.put('/api/productos/:codigo', async (req, res, next) => {
          precio = EXCLUDED.precio, stock = EXCLUDED.stock,
          descripcion = EXCLUDED.descripcion, actualizado_en = now()
        RETURNING (xmax = 0) AS es_nuevo`,
-      [datos.codigo, datos.nombre.trim(), datos.categoria, Number(datos.precio), Number(datos.stock), datos.descripcion.trim()]
+      [datos.codigo, datos.nombre.trim(), datos.categoria, Number(datos.precio), Number(datos.stock), datos.descripcion?.trim() || null]
     );
     if (rowCount === 0) return res.status(400).json({ error: 'La categoría no existe.' });
     res.status(rows[0].es_nuevo ? 201 : 200).json({ ok: true });

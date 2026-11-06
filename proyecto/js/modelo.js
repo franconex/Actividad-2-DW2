@@ -18,7 +18,7 @@ class Producto {
     this.#categoria = categoria;
     this.#precio = Number(precio);
     this.#stock = Number(stock);
-    this.#descripcion = descripcion.trim();
+    this.#descripcion = (descripcion ?? '').trim();
   }
 
   // Getters: permiten leer los datos sin poder cambiarlos desde fuera.

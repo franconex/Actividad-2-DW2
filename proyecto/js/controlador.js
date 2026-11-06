@@ -56,8 +56,11 @@ class ControladorFormulario {
         new ReglaRango(0, 10000, 'Debe estar entre 0 y 10 000.')
       ]),
       new Campo(controles.descripcion, [
-        new ReglaObligatorio('La descripción es obligatoria.'),
-        new ReglaLongitud(10, 200, 'Debe tener entre 10 y 200 caracteres.')
+        // Puede quedar vacía; si se escribe algo, debe tener entre 10 y 200 caracteres.
+        new ReglaPersonalizada(
+          texto => texto === '' || (texto.length >= 10 && texto.length <= 200),
+          'Debe tener entre 10 y 200 caracteres.'
+        )
       ])
     ];
   }

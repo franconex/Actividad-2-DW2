@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS productos (
   categoria_id   INT           NOT NULL REFERENCES categorias(id),
   precio         NUMERIC(10,2) NOT NULL CHECK (precio BETWEEN 0.10 AND 100000),
   stock          INT           NOT NULL CHECK (stock BETWEEN 0 AND 10000),
-  descripcion    VARCHAR(200)  NOT NULL CHECK (char_length(descripcion) BETWEEN 10 AND 200),
+  descripcion    VARCHAR(200)  CHECK (char_length(descripcion) BETWEEN 10 AND 200),
   creado_en      TIMESTAMPTZ   NOT NULL DEFAULT now(),
   actualizado_en TIMESTAMPTZ   NOT NULL DEFAULT now()
 );
